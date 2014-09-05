@@ -1,10 +1,15 @@
 var selenium = require('selenium-webdriver'),
 	fs = require('fs'),
 	BASE_URL = 'http://www.cboe.com/DelayedQuote/QuoteTableDownload.aspx',
+	DOWNLOAD_FILE = '/usr/local/google/home/vigilj/Downloads/QuoteData.dat',
 	SLEEP_TIME = 5000;
 
 exports.getCSVFile = function(ticker) {
-	fs.unlinkSync('/usr/local/google/home/vigilj/Downloads/QuoteData.dat');
+	fs.exists(DOWNLOAD_FILE, function(exists){
+		if (exists) {
+			fs.unlinkSync(DOWNLOAD_FILE);
+		}
+	});
 	
 	var driver = new selenium.Builder().withCapabilities(selenium.Capabilities.chrome()).build();
 	driver.get(BASE_URL);
