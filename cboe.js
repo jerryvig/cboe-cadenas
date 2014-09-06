@@ -39,3 +39,20 @@ exports.getRealTimeQuote = function(ticker, callback) {
 		});
 	});
 };
+
+exports.parseCSVFile = function(callback) {
+	fs.readFile(DOWNLOAD_FILE, function(err, data){
+		var dataString = data + '';
+		var rows = dataString.split('\n');
+		if (rows.length > 3) {
+			var exchangeRows = [];
+			for (var i=3; i<rows.length; i++) {
+				if (rows[i].indexOf('-E)') !== -1) {
+					exchangeRows.push(rows[i]);
+				}
+			}
+
+			//Parse the exchangeRows to get the info that you care about.
+		}
+	});
+};
