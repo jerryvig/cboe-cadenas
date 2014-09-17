@@ -1,6 +1,7 @@
 var selenium = require('selenium-webdriver'),
 	fs = require('fs'),
 	http = require('http'),
+	_ = require('lodash'),
 	BASE_URL = 'http://www.cboe.com/DelayedQuote/QuoteTableDownload.aspx',
 	DOWNLOAD_FILE = '/usr/local/google/home/vigilj/Downloads/QuoteData.dat',
 	SLEEP_TIME = 5000;
@@ -61,7 +62,17 @@ exports.parseCSVFile = function(callback) {
 				var strikePrice = spaceParts[2];
 				var dataPart = spaceParts[3];
 				var dataParts = dataPart.split(',');
-				console.log('date = ' + dataParts[0]);
+				var date = dataParts[0].replace('(', '').replace(')', '');
+				var dateChars = date.split('');
+
+				var numberString = '';
+				for (var j=0; j<dateChars.length; j++) {
+					if (/^\d+$/.test(dateChars[j])) {
+						numberString += dateChars[j];
+					}
+				}
+				date = numberString.substr(2, 2);
+				console.log('date = ' + date);
 			}
 		}
 	});
