@@ -53,6 +53,16 @@ exports.parseCSVFile = function(callback) {
 			}
 
 			//Parse the exchangeRows to get the info that you care about.
+			//console.log('exchangeRows = ' + JSON.stringify(exchangeRows, undefined, 2));
+			for (var i=0; i<exchangeRows.length; i++) {
+				var spaceParts = exchangeRows[i].split(' ');
+				var year = spaceParts[0];
+				var month = spaceParts[1];
+				var strikePrice = spaceParts[2];
+				var dataPart = spaceParts[3];
+				var dataParts = dataPart.split(',');
+				console.log('date = ' + dataParts[0]);
+			}
 		}
 	});
 };
