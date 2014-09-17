@@ -74,7 +74,7 @@ exports.parseCSVFile = function(callback) {
 				rowData.date = numberString.substr(2, 2);
 				rowData.bid = dataParts[3];
 				rowData.ask = dataParts[4];
-
+				rowData.dateObj = new Date(rowData.date + ' ' + rowData.month + ' ' + rowData.year);
 				parsedRows.push(rowData);
 			}
 		}
