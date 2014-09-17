@@ -4,4 +4,6 @@ var cboe = require('./cboe.js');
 /* cboe.getRealTimeQuote('goog', function(quoteObj){
 	console.log('QuoteObj = ' + JSON.stringify(quoteObj));
 }); */
-cboe.parseCSVFile();
+cboe.parseCSVFile(function(rows) {
+	console.log("PARSED ROWS = " + JSON.stringify(rows, undefined, 2));
+});

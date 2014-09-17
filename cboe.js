@@ -1,7 +1,6 @@
 var selenium = require('selenium-webdriver'),
 	fs = require('fs'),
 	http = require('http'),
-	_ = require('lodash'),
 	BASE_URL = 'http://www.cboe.com/DelayedQuote/QuoteTableDownload.aspx',
 	DOWNLOAD_FILE = '/usr/local/google/home/vigilj/Downloads/QuoteData.dat',
 	SLEEP_TIME = 5000;
@@ -45,6 +44,7 @@ exports.parseCSVFile = function(callback) {
 	fs.readFile(DOWNLOAD_FILE, function(err, data){
 		var dataString = data + '';
 		var rows = dataString.split('\n');
+		var parsedRows = [];
 		if (rows.length > 3) {
 			var exchangeRows = [];
 			for (var i=3; i<rows.length; i++) {
@@ -56,24 +56,29 @@ exports.parseCSVFile = function(callback) {
 			//Parse the exchangeRows to get the info that you care about.
 			//console.log('exchangeRows = ' + JSON.stringify(exchangeRows, undefined, 2));
 			for (var i=0; i<exchangeRows.length; i++) {
+				var rowData = {};
 				var spaceParts = exchangeRows[i].split(' ');
-				var year = spaceParts[0];
-				var month = spaceParts[1];
-				var strikePrice = spaceParts[2];
+				rowData.year = spaceParts[0];
+				rowData.month = spaceParts[1];
+				rowData.strikePrice = spaceParts[2];
 				var dataPart = spaceParts[3];
 				var dataParts = dataPart.split(',');
 				var date = dataParts[0].replace('(', '').replace(')', '');
 				var dateChars = date.split('');
-
 				var numberString = '';
 				for (var j=0; j<dateChars.length; j++) {
 					if (/^\d+$/.test(dateChars[j])) {
 						numberString += dateChars[j];
 					}
 				}
-				date = numberString.substr(2, 2);
-				console.log('date = ' + date);
+				rowData.date = numberString.substr(2, 2);
+				rowData.bid = dataParts[3];
+				rowData.ask = dataParts[4];
+
+				parsedRows.push(rowData);
 			}
 		}
+
+		callback(parsedRows);
 	});
 };
