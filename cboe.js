@@ -111,3 +111,7 @@ exports.annualizeYields = function(rows, callback) {
 
 	callback(rows);
 };
+
+exports.getATMByExpiration = function(rows, callback) {
+	//TODO: You need to the ATM strike price for each expiration date.	
+};
