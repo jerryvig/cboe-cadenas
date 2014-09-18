@@ -4,6 +4,7 @@
   "version": "0.0.1",
   "private": true,
   "dependencies": {
-    "selenium-webdriver": "2.43.5"
+    "selenium-webdriver": "2.43.5",
+    "express": "4.9.3"
   }
 }
