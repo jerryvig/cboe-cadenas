@@ -3,7 +3,8 @@ var selenium = require('selenium-webdriver'),
 	http = require('http'),
 	BASE_URL = 'http://www.cboe.com/DelayedQuote/QuoteTableDownload.aspx',
 	DOWNLOAD_FILE = '/usr/local/google/home/vigilj/Downloads/QuoteData.dat',
-	SLEEP_TIME = 5000;
+	SLEEP_TIME = 5000,
+	ONE_SWEET_DAY = 1000*60*60*24;
 
 exports.getCSVFile = function(ticker, callback) {
 	if (fs.existsSync(DOWNLOAD_FILE)) {
@@ -90,6 +91,22 @@ exports.computeYields = function(rows, quoteObj, callback) {
 
 	rows.sort(function(a, b) {
 		return (a.yield-b.yield);
+	});
+
+	callback(rows);
+};
+
+exports.annualizeYields = function(rows, callback) {
+	var today = new Date();
+	for (var i=0; i<rows.length; i++) {
+		var diff = rows[i].dateObj - today;
+		var diffDays = diff/ONE_SWEET_DAY;
+		rows[i].daysToExpiration = Math.ceil(diffDays);
+		rows[i].annualizedYield = (365/rows[i].daysToExpiration)*rows[i].yield;
+	}
+
+	rows.sort(function(a, b) {
+		return (a.annualizedYield-b.annualizedYield);
 	});
 
 	callback(rows);

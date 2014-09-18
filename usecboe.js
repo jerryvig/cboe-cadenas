@@ -8,7 +8,9 @@ cboe.getCSVFile('aapl', function(){
 	cboe.parseCSVFile(function(rows) {
 		cboe.getRealTimeQuote('aapl', function(quoteObj) {
 			cboe.computeYields(rows, quoteObj, function(rows){
-				console.log('rows = ' + JSON.stringify(rows, undefined, 2));
+				cboe.annualizeYields(rows, function(rows){
+					console.log('rows = ' + JSON.stringify(rows, undefined, 2));
+				});
 			});
 		});
 	});
