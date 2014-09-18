@@ -1,0 +1,9 @@
+{
+  "name": "cboe-cadenas",
+  "description": "CBOE Cadenas app",
+  "version": "0.0.1",
+  "private": true,
+  "dependencies": {
+    "selenium-webdriver": "2.43.5"
+  }
+}
