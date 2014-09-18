@@ -87,3 +87,20 @@ exports.parseCSVFile = function(callback) {
 		callback(parsedRows);
 	});
 };
+
+exports.computeYields = function(rows, quoteObj, callback) {
+	console.log('QuoteObj = ' + JSON.stringify(quoteObj));
+
+	for (var i=0; i<rows.length; i++) {
+		if (rows[i].strikePrice >= quoteObj.quote) {
+			rows[i].yield = rows[i].bid/quoteObj.quote;
+		} else {
+			rows[i].yield = (rows[i].bid-(quoteObj.quote-rows[i].strikePrice))/quoteObj.quote;
+		}
+	}
+
+	rows.sort(function(a, b) {
+		return (a.yield-b.yield);
+	});
+	console.log('rows = ' + JSON.stringify(rows, undefined, 2));
+};
