@@ -7,8 +7,8 @@ var cboe = require('./cboe.js');
 cboe.getCSVFile('aapl', function(){
 	cboe.parseCSVFile(function(rows) {
 		cboe.getRealTimeQuote('aapl', function(quoteObj) {
-			cboe.computeYields(rows, quoteObj, function(){
-				console.log('DONE');
+			cboe.computeYields(rows, quoteObj, function(rows){
+				console.log('rows = ' + JSON.stringify(rows, undefined, 2));
 			});
 		});
 	});

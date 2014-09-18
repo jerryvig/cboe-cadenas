@@ -84,8 +84,6 @@ exports.parseCSVFile = function(callback) {
 };
 
 exports.computeYields = function(rows, quoteObj, callback) {
-	console.log('QuoteObj = ' + JSON.stringify(quoteObj));
-
 	for (var i=0; i<rows.length; i++) {
 		rows[i].yield = (rows[i].strikePrice >= quoteObj.quote) ? rows[i].yield = rows[i].bid/quoteObj.quote : (rows[i].bid-(quoteObj.quote-rows[i].strikePrice))/quoteObj.quote;
 	}
@@ -93,5 +91,6 @@ exports.computeYields = function(rows, quoteObj, callback) {
 	rows.sort(function(a, b) {
 		return (a.yield-b.yield);
 	});
-	console.log('rows = ' + JSON.stringify(rows, undefined, 2));
+
+	callback(rows);
 };
