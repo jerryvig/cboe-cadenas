@@ -5,12 +5,15 @@ var selenium = require('selenium-webdriver'),
 	DOWNLOAD_FILE = '/usr/local/google/home/vigilj/Downloads/QuoteData.dat',
 	SLEEP_TIME = 5000;
 
-exports.getCSVFile = function(ticker) {
-	fs.exists(DOWNLOAD_FILE, function(exists){
+exports.getCSVFile = function(ticker, callback) {
+	/* fs.exists(DOWNLOAD_FILE, function(exists){
 		if (exists) {
 			fs.unlinkSync(DOWNLOAD_FILE);
 		}
-	});
+	}); */
+	if (fs.existsSync(DOWNLOAD_FILE)) {
+		fs.unlinkSync(DOWNLOAD_FILE);
+	}
 	
 	var driver = new selenium.Builder().withCapabilities(selenium.Capabilities.chrome()).build();
 	driver.get(BASE_URL);
@@ -20,7 +23,9 @@ exports.getCSVFile = function(ticker) {
 	submit.click();
 
 	driver.sleep(SLEEP_TIME);
-	driver.close();
+	driver.close().then(function(){
+		callback();
+	});
 };
 
 exports.getRealTimeQuote = function(ticker, callback) {
@@ -34,7 +39,7 @@ exports.getRealTimeQuote = function(ticker, callback) {
 			var parts = data.split(',');
 			callback({
 				ticker: parts[0].replace(/"/g, ''),
-				quote: parts[1].replace(/"/g, '').split('<b>')[1].split('</b>')[0]
+				quote: new Number(parts[1].replace(/"/g, '').split('<b>')[1].split('</b>')[0])
 			});
 		});
 	});
@@ -60,7 +65,7 @@ exports.parseCSVFile = function(callback) {
 				var spaceParts = exchangeRows[i].split(' ');
 				rowData.year = spaceParts[0];
 				rowData.month = spaceParts[1];
-				rowData.strikePrice = spaceParts[2];
+				rowData.strikePrice = new Number(spaceParts[2]);
 				var dataPart = spaceParts[3];
 				var dataParts = dataPart.split(',');
 				var date = dataParts[0].replace('(', '').replace(')', '');
@@ -72,8 +77,8 @@ exports.parseCSVFile = function(callback) {
 					}
 				}
 				rowData.date = numberString.substr(2, 2);
-				rowData.bid = dataParts[3];
-				rowData.ask = dataParts[4];
+				rowData.bid = new Number(dataParts[3]);
+				rowData.ask = new Number(dataParts[4]);
 				rowData.dateObj = new Date(rowData.date + ' ' + rowData.month + ' ' + rowData.year);
 				parsedRows.push(rowData);
 			}
