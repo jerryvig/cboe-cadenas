@@ -6,11 +6,6 @@ var selenium = require('selenium-webdriver'),
 	SLEEP_TIME = 5000;
 
 exports.getCSVFile = function(ticker, callback) {
-	/* fs.exists(DOWNLOAD_FILE, function(exists){
-		if (exists) {
-			fs.unlinkSync(DOWNLOAD_FILE);
-		}
-	}); */
 	if (fs.existsSync(DOWNLOAD_FILE)) {
 		fs.unlinkSync(DOWNLOAD_FILE);
 	}
