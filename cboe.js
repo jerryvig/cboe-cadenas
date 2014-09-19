@@ -112,6 +112,18 @@ exports.annualizeYields = function(rows, callback) {
 	callback(rows);
 };
 
-exports.getATMByExpiration = function(rows, callback) {
-	//TODO: You need to the ATM strike price for each expiration date.	
+exports.getATMByExpiration = function(rows, quoteObj, callback) {
+	var atmByExpiry = {};
+	for (var i=0; i<rows.length; i++) {
+		if (rows[i].strikePrice > quoteObj.quote) {
+			if (atmByExpiry[rows[i].dateObj.toString()] !== undefined) {
+				if (rows[i].strikePrice < atmByExpiry[rows[i].dateObj.toString()]) {
+					atmByExpiry[rows[i].dateObj.toString()] = rows[i].strikePrice;
+				}
+			} else {
+				atmByExpiry[rows[i].dateObj.toString()] = rows[i].strikePrice;
+			}
+		}
+	}
+	callback(atmByExpiry);
 };
