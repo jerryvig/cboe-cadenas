@@ -140,3 +140,9 @@ exports.getATMByExpiration = function(rows, quoteObj, callback) {
 
 	callback(atmByExpiryArray);
 };
+
+exports.getFITMByExpiration = function(rows, quoteObj, callback) {
+	//First in the money computation. We would like to know which is the first
+	//option in the money.
+	
+};
