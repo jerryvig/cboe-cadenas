@@ -10,8 +10,8 @@ cboe.getCSVFile('goog', function(){
 			cboe.computeYields(rows, quoteObj, function(rows){
 				cboe.annualizeYields(rows, function(rows){
 					//console.log('rows = ' + JSON.stringify(rows, undefined, 2));
-					cboe.getATMByExpiration(rows, quoteObj, function(atmByExpiry){
-						console.log('atmByExpiry = ' + JSON.stringify(atmByExpiry, undefined, 2));
+					cboe.getFITMByExpiration(rows, quoteObj, function(fitmByExpiry){
+						console.log('fitmByExpiry = ' + JSON.stringify(fitmByExpiry, undefined, 2));
 						console.log('quoteObj = ' + JSON.stringify(quoteObj, undefined, 2));
 					});
 				});

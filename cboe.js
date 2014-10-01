@@ -144,5 +144,30 @@ exports.getATMByExpiration = function(rows, quoteObj, callback) {
 exports.getFITMByExpiration = function(rows, quoteObj, callback) {
 	//First in the money computation. We would like to know which is the first
 	//option in the money.
-	
+	var fitmByExpiry = {};
+	for (var i=0; i<rows.length; i++) {
+		if (rows[i].strikePrice <= quoteObj.quote) {
+			if (fitmByExpiry[rows[i].dateObj.toString()] !== undefined) {
+				if (rows[i].strikePrice > fitmByExpiry[rows[i].dateObj.toString()]) {
+					fitmByExpiry[rows[i].dateObj.toString()] = rows[i].strikePrice;
+				}
+			} else {
+				fitmByExpiry[rows[i].dateObj.toString()] = rows[i].strikePrice;
+			}
+		}
+	}
+
+	var fitmByExpiryArray = [];
+	for (var expiry in fitmByExpiry) {
+		fitmByExpiryArray.push({
+			date: expiry,
+			strike: fitmByExpiry[expiry]
+		});
+	}
+
+	fitmByExpiryArray.sort(function(a, b) {
+		return (new Date(a.date) - new Date(b.date));
+	});
+
+	callback(fitmByExpiryArray);
 };
