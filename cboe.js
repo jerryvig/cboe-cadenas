@@ -125,5 +125,18 @@ exports.getATMByExpiration = function(rows, quoteObj, callback) {
 			}
 		}
 	}
-	callback(atmByExpiry);
+
+	var atmByExpiryArray = [];
+	for (var expiry in atmByExpiry) {
+		atmByExpiryArray.push({
+			date: expiry,
+			strike: atmByExpiry[expiry]
+		});
+	}
+
+	atmByExpiryArray.sort(function(a, b) {
+		return (new Date(a.date) - new Date(b.date));
+	});
+
+	callback(atmByExpiryArray);
 };
