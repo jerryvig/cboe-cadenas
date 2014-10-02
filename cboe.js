@@ -177,15 +177,19 @@ exports.getATMView = function(ticker, callback) {
 				exports.computeYields(rows, quoteObj, function(rows){
 					exports.annualizeYields(rows, function(rows){
 						exports.getATMByExpiration(rows, quoteObj, function(atmByExpiry){
-							//console.log('atmByExpiry = ' + JSON.stringify(atmByExpiry, undefined, 2));
-							
+							var atmDataArray = [];
 							for (var i=0; i<atmByExpiry.length; i++) {
 								for (var j=0; j<rows.length; j++) {
-									if (rows[j].dateObj === new Date(atmByExpiry[i].date)) {
-										console.log("THE DATES MATCHED");
+									if (rows[j].dateObj.getTime() === Date.parse(atmByExpiry[i].date)) {
+										if (rows[j].strikePrice === atmByExpiry[i].strike) {
+											atmDataArray.push(rows[j]);
+											break;
+										}
 									}
 								}
 							}
+
+							callback(atmDataArray);
 						});
 					});
 				});

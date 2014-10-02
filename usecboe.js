@@ -20,6 +20,6 @@ var cboe = require('./cboe.js');
 	});
 }); */
 
-cboe.getATMView('aapl', function(){
-	console.log('DONE!!!');
+cboe.getATMView('nflx', function(atmViewData) {
+	console.log(JSON.stringify(atmViewData, undefined, 2));
 });
