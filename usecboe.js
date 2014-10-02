@@ -4,7 +4,7 @@ var cboe = require('./cboe.js');
 /* cboe.getRealTimeQuote('goog', function(quoteObj){
 	console.log('QuoteObj = ' + JSON.stringify(quoteObj));
 }); */
-cboe.getCSVFile('goog', function(){
+/* cboe.getCSVFile('goog', function(){
 	cboe.parseCSVFile(function(rows) {
 		cboe.getRealTimeQuote('goog', function(quoteObj) {
 			cboe.computeYields(rows, quoteObj, function(rows){
@@ -18,4 +18,8 @@ cboe.getCSVFile('goog', function(){
 			});
 		});
 	});
+}); */
+
+cboe.getATMView('aapl', function(){
+	console.log('DONE!!!');
 });

@@ -169,3 +169,27 @@ exports.getFITMByExpiration = function(rows, quoteObj, callback) {
 
 	callback(fitmByExpiryArray);
 };
+
+exports.getATMView = function(ticker, callback) {
+	exports.getCSVFile(ticker, function(){
+		exports.parseCSVFile(function(rows) {
+			exports.getRealTimeQuote(ticker, function(quoteObj) {
+				exports.computeYields(rows, quoteObj, function(rows){
+					exports.annualizeYields(rows, function(rows){
+						exports.getATMByExpiration(rows, quoteObj, function(atmByExpiry){
+							//console.log('atmByExpiry = ' + JSON.stringify(atmByExpiry, undefined, 2));
+							
+							for (var i=0; i<atmByExpiry.length; i++) {
+								for (var j=0; j<rows.length; j++) {
+									if (rows[j].dateObj === new Date(atmByExpiry[i].date)) {
+										console.log("THE DATES MATCHED");
+									}
+								}
+							}
+						});
+					});
+				});
+			});
+		});
+	});
+};
