@@ -142,8 +142,6 @@ exports.getATMByExpiration = function(rows, quoteObj, callback) {
 };
 
 exports.getFITMByExpiration = function(rows, quoteObj, callback) {
-	//First in the money computation. We would like to know which is the first
-	//option in the money.
 	var fitmByExpiry = {};
 	for (var i=0; i<rows.length; i++) {
 		if (rows[i].strikePrice <= quoteObj.quote) {
