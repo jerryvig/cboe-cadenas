@@ -12,9 +12,12 @@ app.get('/atmView', function(req, res) {
 			res.send(atmViewData);
 		});
 	} else {
-		res.send('ERROR');	
+		res.send('ERROR: Query parameter "ticker" is undefined.');	
 	}
 });
+
+//Mount the static files directory.
+app.use(express.static(__dirname + '/static'));
 
 app.listen(8081, function(){
 	console.log('Listening on port %d', this.address().port);
