@@ -8,6 +8,9 @@
 	<script src="//cdnjs.cloudflare.com/ajax/libs/ng-grid/2.0.11/ng-grid.min.js"></script>
 </head>
 <body ng-controller="CoveredCallCtrl">
+   <div style="margin:0 auto;width:20.0%;padding:10px;">
+   	<input type="text" ng-model="ticker"><button ng-click="getAtmData()">Get ATM Data</button>
+   </div>
    <div ng-grid="gridOptions" style="height:500px;"></div>
 </body>
 <script type="text/javascript">
@@ -15,15 +18,15 @@
 	app.controller('CoveredCallCtrl', ['$scope', '$http', function($scope, $http) {
 		$scope.atmData = [];
 		$scope.gridOptions = {data: 'atmData'};
-		$http.get('/atmView?ticker=fb')
-			.success(function(data, status, headers, config) {
-    			// this callback will be called asynchronously
-    			// when the response is available
-    			$scope.atmData = data;
 
-  			}).error(function(data, status, headers, config) {
-				alert('ERROR: THERE WAS A PROBLEM LOADING THE DATA');
-			});
+		$scope.getAtmData = function() {
+			$http.get('/atmView?ticker=' + $scope.ticker)
+				.success(function(data, status, headers, config) {
+    				$scope.atmData = data;
+  				}).error(function(data, status, headers, config) {
+					alert('ERROR: THERE WAS A PROBLEM LOADING THE DATA');
+				});
+  		};
 	}]);
 </script>
 </html>
