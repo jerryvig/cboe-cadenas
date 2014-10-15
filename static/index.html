@@ -5,21 +5,25 @@
 	<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/ng-grid/2.0.11/ng-grid.min.css">
 	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
 	<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.26/angular.min.js"></script>
-	<script src="//cdnjs.cloudflare.com/ajax/libs/angular.js/1.2.20/angular-route.js"></script>
 	<script src="//cdnjs.cloudflare.com/ajax/libs/ng-grid/2.0.11/ng-grid.min.js"></script>
 </head>
 <body ng-controller="CoveredCallCtrl">
-   <div ng-grid="gridOptions" style="height:300px;"></div>
+   <div ng-grid="gridOptions" style="height:500px;"></div>
 </body>
 <script type="text/javascript">
 	var app = angular.module('coveredCallApp', ['ngGrid']);
-	app.controller('CoveredCallCtrl', function($scope) {
-		$scope.myData = [{name: "Moroni", age: 50},
-            {name: "Tiancum", age: 43},
-            {name: "Jacob", age: 27},
-            {name: "Nephi", age: 29},
-            {name: "Enos", age: 34}];
-    	$scope.gridOptions = { data: 'myData' };
-	});
+	app.controller('CoveredCallCtrl', ['$scope', '$http', function($scope, $http) {
+		$scope.atmData = [];
+		$scope.gridOptions = {data: 'atmData'};
+		$http.get('/atmView?ticker=fb')
+			.success(function(data, status, headers, config) {
+    			// this callback will be called asynchronously
+    			// when the response is available
+    			$scope.atmData = data;
+
+  			}).error(function(data, status, headers, config) {
+				alert('ERROR: THERE WAS A PROBLEM LOADING THE DATA');
+			});
+	}]);
 </script>
 </html>
