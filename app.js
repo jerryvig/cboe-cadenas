@@ -6,6 +6,7 @@ app.get('/hello', function(req, res) {
 	res.send('Hello World!');
 });
 
+//Route for the ATM options data view.
 app.get('/atmView', function(req, res) {
 	if (req.query.ticker !== undefined) {
 		cboe.getATMView(req.query.ticker, function(atmViewData) {
